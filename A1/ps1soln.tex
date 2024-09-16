@@ -1,0 +1,400 @@
+\documentclass{assignment-263}
+
+
+\anum{1}
+\course{CSC263}
+\duedate{Feb 9, 2022}
+\filename{ps1soln.pdf, ps1soln.tex, csc263\_ps1.py }
+
+\begin{document}
+
+\think
+
+\textbf{Please see the course syllabus for the late submission policy.}
+
+\begin{enumerate}
+\item \textbf{[10 points]}
+Consider the following algorithm, where \textrm{L} is a linked list.
+
+\begin{python}
+def search(L):
+  n = L.size # the number of elements in "L", excluding the "None" element
+  z = L.head
+  print("Starting search.")
+  while z != None and z.key != 10:
+    print("Keep searching.")
+    z = z.next
+  return z
+\end{python}
+
+Suppose that the input list L has $n$ ($\ge 20$) elements (excluding the
+\texttt{None} element). The list is constructed randomly as follows,
+with all choices are made independently of each other.
+
+\begin{itemize}
+    \item The first number in the list is the number 1
+    \item The second number in the list is picked uniformly randomly from the set $\{1, 2\}$
+    \item The $k-th$ number in the list is picked uniformly randomly from the set $\{1, 2, \ldots, k\}$
+\end{itemize}
+
+Let us analyze the number of times a ``print'' statement is executed.
+Answer the following questions in \textbf{exact form} and \textbf{not} in
+asymptotic notation. Show your work!
+
+\begin{enumerate}
+\item \\
+ Since the while loop stop at Z.key equals to 10 or running the whole string,
+ and the length of the string is larger than 20. So, the smallest number of times
+ that Print statements are executed should be 10, at this case, the Z.key = 10. So
+ the smallest number of times that print statements are executed is 10 times.
+ And The $k-th$ number in the list is picked uniformly randomly from the 
+ set $\{1, 2, \ldots, k\}$. So when k.KEY = 10, $k \geq 10$, and min(k) = 10.\\
+ The probability for achieving this situation is $\frac{1}{10}$. \\
+ 
+\item 
+The largest number of times that print statements happens when the while loop do not stop until the whole list is run, which is z = None. So the largest number of times that print statements are executed is n times.
+The probability for achieving this is (1 - $\frac{1}{10}$) $\times$ (1 - $\frac{1}{11}$) $\times$ (1 - $\frac{1}{12}$) $\times$ (1 - $\frac{1}{13}$)$\times ... $\times$ (1 - $\frac{1}{n-1}$) $\times$ (1 - $\frac{1}{n}$) = \prod_{i=10}^{n} \frac{i-1}{i} = \frac{9}{n}$
+\\
+ 
+\item 
+  The probability with 10 times =  $\frac{1}{10}$\\
+  The probability with 11 times =  $\frac{9}{10}$ $\times$ $\frac{1}{11}$ = $\frac{9}{10 \times 11}$ \\
+  The probability with 12 times =  $\frac{9}{10}$ $\times$ $\frac{10}{11}$ $\times$ $\frac{1}{12}$ = $\frac{9}{11 \times 12}$ \\
+  and so on...\\
+  The probability with n - 1 time = $\frac{9}{(n - 2) \times  (n - 1)}$ \\
+  Thus, the expected number of times = 10 $\times$  $\frac{1}{10}$ + ($\sum_{i=11}^{n - 1} i \times \frac{9}{(i-1) \times i}  $) + n \times \frac{9}{n} = 1 + ($\sum_{i=11}^{n - 1} \frac{9}{i - 1}$) + 9 
+  = 10 + $\sum_{i = 10}^{n-2} \frac{9}{i}$
+  
+\item
+  Since the expected number of times that print statements are executed is 10 + $\sum_{i = 10}^{n-2} \frac{9}{i}$,when n approaching to infinity, $\lim_{n\to\infty}$10 + $\sum_{i = 10}^{n-2} \frac{9}{i}$
+  = $\lim_{n\to\infty}$ $\sum_{i = 10}^{n-2} \frac{9}{i}$ = $\lim_{n\to\infty}$ $\sum_{i = 10}^{n} \frac{9}{i}$ = 9 $\lim_{n\to\infty}$ $\sum_{i = 10}^{n} \frac{1}{i}$ = 9 $\lim_{n\to\infty}$ $\sum_{i = 1}^{n} \frac{1}{i}$ = 9 $\lim_{n\to\infty}$ \(\int_{n}^{i} \frac{1}{i} \,di\) = 9 \ln(n)$ \\
+  thus, we can conclude that the the expected number of times that print statements are executed is O(\log(n)).$\\
+  Thus $\Theta(\log n)$
+\end{enumerate}
+
+\newpage
+
+\item[2.] \textbf{[10 points]}
+Suppose the keys $1$, $2$, $3$, $4$, $5$, $6$, $7$ are inserted in 
+random order into a binary search tree, where each order of insertion is
+equally likely to occur. We will be computing the average height of the
+resultant tree. \\
+\\
+To that end, let $H(n)$ be the average height of a BST with keys from $\{1, \ldots ,n\}$
+inserted in uniformly random order. So (trivially) $H(1)=0$, $H(2)=1$.
+
+\begin{enumerate}
+  \item Show that $H(3) = \frac{5}{3}$.\\
+      The average height of 1 being root is 2\\
+      The average height of 2 being root is 1\\
+      The average height of 3 being root is 2\\
+      Thus, $H(3) =  \frac{1}{3} \times 2$ + $\frac{1}{3} \times 1$ + $\frac{1}{3} \times 2$ = $\frac{2}{3}$ +$\frac{1}{3} $ + $\frac{2}{3}$ = $\frac{5}{3}$
+  \item Show that $H(4) = \frac{7}{3}$.\\
+      When 1 being its root, all other integers is more than 1, so its right side is a BST with three elements; thus, 
+      The average height of 1 being root is 1 + H(3) = 1 + $\frac{5}{3}$ = $\frac{8}{3}$ \\
+      When 2 being its root, 1 is less than 2, and 3, 4 is larger than 2, so it left side is a single BST, and the right side is a BST with 2 integers; thus, 
+      The average height of 2 being root is 1 + max($H(2), H(1)$) = 1 + $H(2)$ = 1 + 1 = 2\\
+      When 3 being its root, 1, 3 is less than 3, and 4 is larger than 3, so it left side is a  a BST with 2 integers, and its right side is a single BST; thus, 
+      The average height of 3 being root is 1 + max($H(2), H(1)$) = 1 + $H(2)$ = 1 + 1 = 2\\
+      When 4 being its root, all integers are less than 4, so its left side is a BST with three elements; thus
+      The average height of 4 being root is 1 + H(3) = 1 + $\frac{5}{3}$ = $\frac{8}{3}$\\
+      In conclusion, $H(4) = \frac{1}{4} \times \frac{8}{3} $+ $\frac{1}{4} \times 2$ + $\frac{1}{4} \times 2$ + $ \frac{1}{4} \times \frac{8}{3}$ = $\frac{7}{3}$
+  \item $H(5) = \frac{14}{5}$.\\
+      The average height of 1 being root is 1 + H(4) = 1 + $\frac{7}{3}$ = $\frac{10}{3}$ \\
+      The average height of 2 being root is 1 + max($H(3), H(1)$) = 1 + $H(3)$ =1 + $\frac{5}{3}$ = $\frac{8}{3}$\\
+      The average height of 3 being root is 1 + max($H(2), H(2)$) = 1 + $H(2)$ = 1 + 1 = 2\\
+      The average height of 4 being root is 1 + max($H(3), H(1)$) = 1 + $H(3)$ =1 + $\frac{5}{3}$ = $\frac{8}{3}$\\
+      The average height of 5 being root is 1 + H(4) = 1 + $\frac{7}{3}$ = $\frac{10}{3}$ \\
+      Thus, $H(5) = \frac{1}{5} \times \frac{10}{3} $+ $\frac{1}{5} \times \frac{8}{3}$ + $\frac{1}{5} \times 2$ + $ \frac{1}{5} \times \frac{8}{3}$ + $\frac{1}{5} \times \frac{10}{3} $ = $\frac{14}{5}$
+  \item Show that $H(6) = \frac{49}{15}$.\\
+      The average height of 1 being root is 1 + H(5) = 1 + $\frac{14}{5}$ = $\frac{19}{5}$ \\
+      The average height of 2 being root is 1 + max($H(1), H(4)$) = 1 + H(4) = 1 + $\frac{7}{3}$ = $\frac{10}{3}$ \\
+      The average height of 3 being root is 1 + max($H(3), H(2)$) = 1 + $H(3)$ =1 + $\frac{5}{3}$ = $\frac{8}{3}$\\
+      The average height of 4 being root is 1 + max($H(3), H(2)$) = 1 + $H(3)$ =1 + $\frac{5}{3}$ = $\frac{8}{3}$\\
+      The average height of 5 being root is 1 + max($H(1), H(4)$) = 1 + H(4) = 1 + $\frac{7}{3}$ = $\frac{10}{3}$ \\
+      The average height of 6 being root is 1 + H(5) = 1 + $\frac{14}{5}$ = $\frac{19}{5}$ \\ 
+      Thus, $H(6) = \frac{1}{6} \times \frac{19}{5} $+ $\frac{1}{6} \times \frac{10}{3}$ + $\frac{1}{6} \times \frac{8}{3}$ + $ \frac{1}{6} \times \frac{8}{3}$ + $\frac{1}{6} \times \frac{10}{3} $  + $\frac{1}{6} \times \frac{19}{5} $= $\frac{49}{15}$
+  \item  Compute $H(7)$.\\ 
+      The average height of 1 being root is 1 + H(6) = 1 + $\frac{49}{15}$ = $\frac{64}{15}$ \\
+      The average height of 2 being root is 1 + max($H(1), H(5)$) = 1 + H(5) = = 1 + $\frac{14}{5}$ = $\frac{19}{5}$\\
+      The average height of 3 being root is 1 + max($H(2), H(4)$) = 1 + H(4) = 1 + $\frac{7}{3}$ = $\frac{10}{3}$ \\
+      The average height of 4 being root is 1 + max($H(3), H(3)$) = 1 + H(3) = 1 + $\frac{5}{3}$ = $\frac{8}{3}$\\
+      The average height of 5 being root is 1 + max($H(2), H(4)$) = 1 + H(4) = 1 + $\frac{7}{3}$ = $\frac{10}{3}$ \\
+      The average height of 6 being root is 1 + max($H(1), H(5)$) = 1 + H(5) = = 1 + $\frac{14}{5}$ = $\frac{19}{5}$\\
+      The average height of 7 being root is 1 + H(6) = 1 + $\frac{49}{15}$ = $\frac{64}{15}$ \\
+      Thus, $H(7) = \frac{1}{7} \times \frac{64}{15} $ + $\frac{1}{7} \times \frac{19}{5} $ + $\frac{1}{7} \times \frac{10}{3}$ +  $\frac{1}{7} \times \frac{8}{3}$ + $\frac{1}{7} \times \frac{10}{3}$ + $\frac{1}{7} \times \frac{19}{5} $ + $\frac{1}{7} \times \frac{64}{15} $ = $\frac{382}{105}$
+  \item
+\begin{python}
+def H(n):
+  if n == 0:   #it is impossible for n = 0,
+   return 0    # but if we assume H(0) = 0, it will be easier for recursion
+  if n == 1:
+   return 0
+  elif n == 2:
+   return 1
+  elif n == 3:
+   return 5/3  # three base case
+  else:
+   a = 1       #start with 1 being root
+   b = n - 1   # there are b node in the right of the root
+   c = 0       # there are c node in the left of the root
+   total = 0
+   while a < n:
+     total += (1 + max(H(b), H(c))) / n
+     c += 1
+     b -= 1
+     a += 1    # using while loop to add all conditions
+   return total
+
+def max(a, b):
+   if a > b:
+    return a
+   return b
+\end{python}
+This code is how i get c to e.
+\end{enumerate}
+
+
+\item[3.] \textbf{[10 points]} In this question, we will define a data structure that implements an ADT called
+\verb|WORD-COST-DICTIONARY| that stores a collection of English words.
+Each English word is a sequence of lower-case letters a-z, and has at least one vowel. 
+Each English word has an associated cost. 
+The ADT \verb|WORD-COST-DICTIONARY| supports the following operations
+(where $S$ is a given \verb|WORD-COST-DICTIONARY|)
+
+\begin{itemize}
+    \item \verb|LookUp(S, w)|: given a word string $w$, return the cost of that word.
+    \item \verb|AddCost(S, w, c)|: add the word $w$ to the dictionary, and assign $c$ as its cost.
+    \item \verb|DeleteCost(S, w)|: remove the word $w$ from the dictionary.
+    \item \verb|Change(S, w, c)|: change the cost of word $w$ to the new cost $c$.
+    \item \verb|CostBetween(S, v, w)|: return the total cost of all words that are
+        lexicographically between $v$ and $w$, inclusive
+        (i.e. ``hey" is lexicographically between ``hello" and ``hi").
+        Note that $v$ and $w$ \textit{may or may not be} in the collection.
+        You may assume that $v$ appears earlier than $w$ lexicographically.
+\end{itemize}
+
+Design a data structure that implements \verb|WORD-COST-DICTIONARY| using an
+\textbf{augmented AVL tree}.
+The worst case runtime of each of these operations should be $O(\lg n)$.
+
+For the below questions, do \textbf{not} repeat algorithms or runtime analyses
+from the class or the course notes, and refer to known results as needed.
+
+\begin{enumerate}
+  \item \\
+  The key of the AVL tree should be a string which represents the word. And it has 2 attribute, which is the cost of the word, and another one is the sum of the costs of its subtree.
+  \item 
+     \begin{python}
+   def LookUp(S, w):
+     x = S.root   # set x be the root of S
+     while x.key != w:
+       if x.key > w:   # if x.key is greater than w
+         x = S.left.key #  try to find w in the left of current x
+       else:           # if x.key is less than w 
+         x = S.right.key # try to find w in the right of current x
+     return x.cost
+     # in the worst case, it is finding the minimum or the maximum element in 
+     # the AVL, which will run as much time as its height, which is log(n).
+     # thus O(log(n)).
+        
+    def AddCost(S, w, c):
+      x = S.root # set x be the root of x
+      while x.key is not None:
+        if x.key > w:   # if x.key is greater than w
+         x.sum += c
+         x = S.left.key # check if there is an empty space in the left 
+        else:           # if x.key is less than w 
+         x.sum += c
+         x = S.right.key # check if there is an empty space in the right
+      x.key = w
+      x.cost = c
+      x.sum += c
+      # in the worst case, it is adding its cost to the minimum or the maximum
+      #element in the AVL, which will run as much time as its height, which is 
+      # log(n).
+      # thus O(log(n)).
+      
+    def DeleteCost(S, w):
+      x = S.root # set x be the root of x
+      m = Lookup(S, w)
+      while x.key ! = w:
+        if x.key > w:   # if x.key is greater than w
+         x.sum -= m
+         x = S.left.key # check if there is an empty space in the left
+        else:           # if x.key is less than w 
+         x.sum -= m
+         x = S.right.key # check if there is an empty space in the right
+      x.key = None
+      x.cost = None
+      x.sum -= m
+     # Firstly, it runs a Lookup, which is O($\log(n)$). And then,
+     # for the while loop, in the worst case, it will run as much
+     # time as its height, which is #$\log(n)$.
+     #thus this function is O(log(n)) + O(log(n)) = O(2log(n)) = #O(log(n))
+   \end{python}
+
+  \item 
+  \begin{python}
+   def Change(s,w,c):
+     x = S.root
+     m = Lookup(S, w)
+     while x.key ! = w:
+        if x.key > w:   # if x.key is greater than w
+         x.sum = x.sum + c - m
+         x = S.left.root # check if there is an empty space in the left 
+        else:           # if x.key is less than w 
+         x = S.right.root # check if there is an empty space in the right
+         x.sum = x.sum + c - m
+     x.cost = c
+     x.sum = x.sum + c - m
+   \end{python}
+   Firstly, it runs a Lookup, which is O($\log(n)$).
+   At the worst case, we run the string w is the key of a node in the bottom of this binary search tree, and this function's while loop runs the time which is same as the height of the tree, which is log(n), thus, this function is $O(\log(n))$.\\
+  \item 
+   \begin{python}
+   def minimum(S):
+     x = S.root
+     while x.left.key != None:
+        x = x.left
+    return x
+    
+  def maximum(S):
+    x = S.root
+    while x.right.key != None:
+      x = x.right
+    return x
+    
+  def CostBetween(S, v, w):
+    min = minimum(S)
+    max = maximum(S)
+    if v < min.key && w > max.key:
+     return S.root.sum
+    elif v > max.key || w < min.key:
+     return 0
+    elif v >= min.key && w > max.key:
+     if S.root.key < v:
+      subtree = S.root.right_subtree()
+      return CostBetween(subtree, v, max.key)
+     else:
+      subtree = S.root.left_subtree()
+      return CostBetween(subtree, v, S.root.key) + S.root.right.sum
+    elif v < min.key && w <= max.key:
+     if S.root.key > w:
+       subtree = S.root.left_subtree()
+       return CostBetween(subtree, min.key, w)
+     else:
+       subtree = S.root.right_subtree()
+       return S.root.left.sum + CostBetween(subtree, S.root.key, w)
+    else:     # when  v > min.key && w < max.key
+     if S.root.key < v:
+       subtree = S.root.right_subtree()
+       return CostBetween(subtree, v, w)
+     elif S.root.key > w:
+       subtree = S.root.left_subtree() 
+       return CostBetween(subtree, v, w)
+     else:
+       subtree_a = S.root.right_subtree()
+       subtree_b = S.root.left_subtree()
+       return CostBetween(subtree_a, v, w) 
+         + CostBetween(subtree_b, v, w)
+   \end{python}
+For this function, firstly, we find the minimum and maximum node in the tree, which will spend a log(n).\\
+Secondly, we sperate this function into four different conditions\\
+In the first condition, when v $<$ min.key and w $>$ max.key. In this situation, all words in the tree has been counted. thus, the total cost
+of v to w should be equal to the total cost of the whole tree, which is equal to the sum at root of the tree. And the complexity is 0(1) in this case, so the total complexity is O($\log(n)$) under this condition.\\
+In the second condition, when v $>$ max.key or w $<$ min.key. In this situation, since v to w is out of range, none of the word in tree has been count.
+thus, the cost of v to w is 0. And the complexity is O(1), so the total complexity is O($\log(n)$) under this condition. \\
+In condition 3, when v $\ge$ min.key and w $>$ max.key. In this condition, we separate into two conditions.\\
+\  \ 3.1 When the key of the root is less than v, that is means that v to w is all in the right side of the root. So, we can shrink the searching area from whole tree to only the right subtree of the whole AVL. In this case, for the worst case, when v = min, it will runs as much time as the height of tree, which is $\log(n)$. Thus, the complexity is  O($\log(n)$). \\
+\  \ 3.2 When the key of the root is larger than v, that means that the whole right subtree has been counted,and only the part from v to the root has to be calculate. In this situation, it is equal to the total cost between v to the root add the total sum of the right side of the root, which is the sum of the right son of the root. In this case, the worst case will run as much time as the heights of the tree, which is  $\log(n)$ + 1. Thus, the complexity is  O($\log(n)$).\\
+In condition 4, when v $<$ min.key and w $\leq$ max.key. In this condition, we separate into two conditions.\\
+\  \ 4.1 When the key of the root is greater than w,that is means that v to w is all in the left side of the root. So, we can shrink the searching area from whole tree to only the left subtree of the whole AVL. In this case, for the worst case, when w = max, it will runs as much time as the height of tree, which is $\log(n)$. Thus, the complexity is  O($\log(n)$). \\
+\  \ 4.2 When the key of the root is less than w, that means that the whole left subtree has been counted,and only the part from root to the w has to be calculate. In this situation, it is equal to the total cost between the root to w add the total sum of the left side of the root, which is the sum of the left son of the root. In this case, the worst case will run as much time as the heights of the tree, which is  $\log(n)$ + 1. Thus, the complexity is  O($\log(n)$).\\
+In condition 5, when  v $>$ min.key or w $<$ max.key, which means v to w is in the tree. we separate into three conditions.
+\  \ 5.1 When the key of the root is less than v, which means that v to w is all in the right side of the root. So we can shrink the searching area from whole tree to only the right subtree. In this case, in the worst condition, we will run as much time as its height, which is $\log(n)$. Thus, the complexity is  O($\log(n)$).
+\  \ 5.2 When the key of the root is greater than w, which means that v to w is all in the left side of the root. So we can shrink the searching area from whole tree to only the left subtree. In this case, in the worst condition, we will run as much time as its height, which is $\log(n)$. Thus, the complexity is  O($\log(n)$).
+\   \ 5.3 When the key of the root is between v to w, we must add the total cost from v to w in the left subtree and v to w in the right subtree. After separate, CostBetween(leftsubtree, v, w) is condition 3 , and CostBetween(rightsubtree, v, w) is condition 4. So it is O($\log(n)$) + O($\log(n)$), and the complexity is O($\log(n)$).
+\end{enumerate}
+
+
+
+
+\program
+
+\item[4.] \textbf{[10 points]}
+    In this question, we will solve a problem that we call {\bf Gold Prospecting}.
+    The function \verb|solve_gold_prospecting| takes a list of commands that
+    operate on the current collection of data.
+    Your task is to process the commands in order and return the required list of results.
+    There are two kinds of commands: \verb|insert| commands and \verb|get_gold| commands.
+
+    An \verb|insert| command is a string of the form \verb|insert x|,
+    where \verb|x| is an integer. (Note the space between \verb|insert| and \verb|x|.)
+    This command adds \verb|x| to the collection.
+
+    A \verb|get_gold| command is simply the string \verb|get_gold|.
+    It retrieves the $\ceil{\phi\times n}$-th smallest element in the collection, where 
+    $\phi=0.618$ is a variation of the \textbf{golden ratio},
+    and $n$ is the current size of the collection.
+    For this question, use $\phi=0.618$ and no additional decimal places.
+
+    Your goal is to implement \verb|insert| in $O(\lg n)$ time worst-case, and 
+    \verb|get_gold| in $O(1)$ time worst-case.
+    Your algorithm should also have $O(n)$ space complexity.
+    Here, $n$ is the number of elements currently in the collection.
+    The list returned by \verb|solve_gold_prospecting| consists of the results, in order,
+    from each \verb|get_gold| command.
+
+    Let's go through an example. Here is a sample call of \verb|solve_gold_prospecting|:
+    \begin{verbatim}
+    solve_gold_prospecting(
+      ['insert 10',
+       'get_gold',
+       'insert 5',
+       'insert 2',
+       'insert 8',
+       'get_gold',
+       'insert -5'
+       'get_gold',
+      ])
+    \end{verbatim}
+    These commands corresponds to the following steps:
+    \begin{itemize}
+    \item The collection begins empty, with no elements.
+    \item We insert 10. The collection contains just the integer 10.
+    \item We then have our first \verb|get_gold| command. The result is the $\ceil{\phi\times 1} = \ceil{0.618} = 1$st
+          smallest element currently in the collection, which is 10.
+    \item We insert 5. The collection now contains 10 and 5.
+    \item We insert 2. The collection now contains 10, 5, and 2.
+    \item We insert 8. The collection now contains 10, 5, 2, and 8.
+    \item Now we have our second \verb|get_gold| command. The result is the $\ceil{\phi\times 4}  = \ceil{2.472} = 3$rd
+          smallest element currently in the collection, which is 8.
+    \item We insert -5. The collection now contains 10, 5, 2, 8, and -5.
+    \item Now we have our third and final \verb|get_gold| command. The result is the $\ceil{\phi\times 5} = \ceil{3.09} = 4$th
+          smallest element currently in the collection, which is 8.
+    \end{itemize}
+
+    So, the above call \verb|solve_gold_prospecting| returns \verb|[10, 8, 8]|, which
+    are the three values produced by the \verb|get_gold| commands.
+  
+\textbf
+\item
+For this code, i plan to use two heaps to achieve this, one of them is a minimum heap, and the other one is a maximum heap. \\
+when inserting an new integer, we firstly compare it with the root of the minimum integer;\\
+Firstly, if it is adding to a heap, which means that it is the first integer, i will add it into the minimum heap.\\ 
+if it is smaller than the current minimum integer, we add this element into the maximum heap, and then compare the length of the maximum heap with the length of the whole heap times (1 - golden rate); if the length of the maximum heap is larger, then we will remove the root of the maximum heap(which is the largest integer), and add it into the minimum heap. \\
+if the new integer we are trying to insert is larger than the current minimum integer, we will add it into the minimum heap, and then compare the length of the minimum heap with the length of the whole heap times the golden rate, if the length of the minimum heap is larger, we will remove the smallest integer in the minimum heap(which is the root), and then adding it into the maximum heap.\\
+For function getgold, when there is only 1 element, we just need to get that element, which is in the minimum heap, otherwise, return the root of the max heap. \\
+\\
+For function insert, we firstly did a inserting for normal heap, which is O($\log(n)$), and then, for moving the element, we only move the root of both heaps, and adding it into the new heap, it is another O($\log(n)$). Thus, new insert method is O($\log(n)$) + O($\log(n)$) = O(2$\log(n)$) = O($\log(n)$).\\
+For function getgold, since we only care about a root of heap, it is always O(1).
+
+\end{enumerate}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
